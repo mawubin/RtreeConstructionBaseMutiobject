@@ -1,12 +1,9 @@
 package Rtree;
 
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.github.davidmoten.rtree.geometry.Geometries;
 import com.github.davidmoten.rtree.geometry.Point;
-import com.sun.javafx.collections.MappingChange.Map;
 
 import util.util;
 /*
@@ -56,6 +53,13 @@ public class RandomObjects {
 			randomobjects.add(newobject);
 		}
 	}
-
+	public Object getObject(int key)
+	{
+		Object newobject= new Object();
+		
+		
+		newobject=this.randomobjects.get(key);
+		return newobject;
+	}
 
 }
