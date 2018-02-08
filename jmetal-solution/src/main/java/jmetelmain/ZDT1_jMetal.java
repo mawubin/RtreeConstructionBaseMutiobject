@@ -24,45 +24,46 @@ public class ZDT1_jMetal {
 	 public static void main(String[] args) throws FileNotFoundException {
 		 
 		 
-	        Problem<DoubleSolution> problem;//定义 问题
-	        Algorithm<List<DoubleSolution>> algorithm;//
+	        Problem<DoubleSolution> problem;//瀹氫箟 闂
+	        Algorithm<List<DoubleSolution>> algorithm;
 	        CrossoverOperator<DoubleSolution> crossover;
 	        MutationOperator<DoubleSolution> mutation;
 	        SelectionOperator<List<DoubleSolution>, DoubleSolution> selection;
 	        String referenceParetoFront = "";
-	        //定义优化问题
-	        problem = new ZDT1();
+	        //瀹氫箟浼樺寲闂
+	        zdttest zdtt= new zdttest();
+	        problem =zdtt;
 	       
-	        //配置SBX交叉算子
+	        //閰嶇疆SBX浜ゅ弶绠楀瓙
 	        double crossoverProbability = 0.9;
 	        double crossoverDistributionIndex = 20.0;
 	        crossover = new SBXCrossover(crossoverProbability, crossoverDistributionIndex);
-	        //配置变异算子
+	        //閰嶇疆鍙樺紓绠楀瓙
 	        double mutationProbability = 1.0 / problem.getNumberOfVariables();
 	        //  double mutationDistributionIndex = 20.0 ;
 	        mutation = new SimpleRandomMutation(mutationProbability);
-	        //配置选择算子
+	        //閰嶇疆閫夋嫨绠楀瓙
 	        selection = new BinaryTournamentSelection<DoubleSolution>(
 	                new RankingAndCrowdingDistanceComparator<DoubleSolution>());
-	        //将组件注册到algorithm
+	        //灏嗙粍浠舵敞鍐屽埌algorithm
 	        algorithm = new NSGAIIBuilder<DoubleSolution>(problem, crossover, mutation)
 	                .setSelectionOperator(selection)
 	                .setMaxEvaluations(25000)
 	                .setPopulationSize(100)
 	                .build();
-	/*       或者用这样的方法注册一个算法
+	/*       鎴栬�呯敤杩欐牱鐨勬柟娉曟敞鍐屼竴涓畻娉�
 	          evaluator = new SequentialSolutionListEvaluator<DoubleSolution>();
 	          algorithm = new NSGAII<DoubleSolution>(problem, 25000, 100, crossover,
 	          mutation, selection, evaluator);
 	*/
-	        //用AlgorithmRunner运行算法
+	        //鐢ˋlgorithmRunner杩愯绠楁硶
 	        AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
-	        //获取结果集
+	        //鑾峰彇缁撴灉闆�
 	        List<DoubleSolution> population = algorithm.getResult();
 	        long computingTime = algorithmRunner.getComputingTime();
-
+	        zdtt.paint();
 	        JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-	        //将全部种群打印到文件中
+	        //灏嗗叏閮ㄧ缇ゆ墦鍗板埌鏂囦欢涓�
 	        printFinalSolutionSet(population);
 	        if (!referenceParetoFront.equals("")) printQualityIndicators(population, referenceParetoFront);
 	    }

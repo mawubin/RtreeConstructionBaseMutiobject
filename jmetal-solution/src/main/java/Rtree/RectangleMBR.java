@@ -1,5 +1,6 @@
 package Rtree;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.github.davidmoten.guavamini.Objects;
@@ -10,28 +11,47 @@ import com.github.davidmoten.rtree.geometry.Point;
 import com.github.davidmoten.rtree.geometry.Rectangle;
 import com.github.davidmoten.rtree.internal.util.ObjectsHelper;
 
+import info.debatty.java.stringsimilarity.Jaccard;
+
 public class RectangleMBR implements Rectangle{
 
-	 public final float x1, y1, x2, y2;
-
+	 	public float x1, y1, x2, y2;
+	 	public String text="";
+	 	public ArrayList<RectangleMBR> arrRects = new ArrayList<RectangleMBR>();
 	    public RectangleMBR(float x1, float y1, float x2, float y2) {
-	        Preconditions.checkArgument(x2 >= x1);
-	        Preconditions.checkArgument(y2 >= y1);
-	        this.x1 = x1;
-	        this.y1 = y1;
-	        this.x2 = x2;
-	        this.y2 = y2;
+	    	float minx= (x2 >= x1)?x1:x2;
+	    	float miny= (y2 >= y1)?y1:y2;
+	    	float maxx= (x2 >= x1)?x2:x1;
+	    	float maxy= (y2 >= y1)?y2:y1;
+	        Preconditions.checkArgument(maxx >= minx);
+	        Preconditions.checkArgument(maxy >= miny);
+	        this.x1 = minx;
+	        this.y1 = miny;
+	        this.x2 = maxx;
+	        this.y2 = maxy;
 	    }
 
 	    static Rectangle create(double x1, double y1, double x2, double y2) {
 	        return new RectangleMBR((float) x1, (float) y1, (float) x2, (float) y2);
 	    }
-
+	    
 	    static Rectangle create(float x1, float y1, float x2, float y2) {
 	        return new RectangleMBR(x1, y1, x2, y2);
 	    }
 	    /*
-	     *增加合并两个点的方法
+	     *澧炲姞鍚堝苟涓や釜鐐圭殑瀛楃涓叉柟娉�
+	     * 
+	
+	     */
+	    public void acumalateString(String string1,String string2)
+	    {
+	    	String newstring="";
+	    	newstring=string1+" "+string2;
+	    	this.text= newstring;
+	    }
+	    
+	    /*
+	     *澧炲姞鍚堝苟涓や釜鐐圭殑鏂规硶
 	     * 
 	
 	     */
@@ -42,21 +62,25 @@ public class RectangleMBR implements Rectangle{
 	    	
 	    }
 	    /*
-	     *增加合并两个矩形的方法
+	     *澧炲姞鍚堝苟涓や釜鐭╁舰鐨勬柟娉�
 	     * 
 	
 	     */
-	    public RectangleMBR accumulateRect(RectangleMBR r1,Point p2)
+	    public void accumulateRect(RectangleMBR r1,Point p2)
 	    {
 	    	float x1,y1,x2,y2;
 	    	x1=min(r1.x1(),p2.x(),r1.x2());
 	    	y1=min(r1.y1(),p2.y(),r1.y2());
 	    	x2=max(r1.x1(),p2.x(),r1.x2());
 	    	y2=max(r1.y1(),p2.y(),r1.y2());
-			return (RectangleMBR) RectangleMBR.create(x1,y1,x2,y2);
+	    	this.x1=x1;
+	    	this.y1=y1;
+	    	this.x2=x2;
+	    	this.y2=y2;
+			//return (RectangleMBR) RectangleMBR.create(x1,y1,x2,y2);
 	    }
 	    /*
-	     *增加计算交叉面积的方法
+	     *澧炲姞璁＄畻浜ゅ弶闈㈢Н鐨勬柟娉�
 	     * 
 	
 	     */
@@ -73,7 +97,7 @@ public class RectangleMBR implements Rectangle{
 	    	return squre;
 	    }
 	    /*
-	     *增加计算总面积的方法
+	     *澧炲姞璁＄畻鎬婚潰绉殑鏂规硶
 	     * 
 	
 	     */
@@ -87,7 +111,19 @@ public class RectangleMBR implements Rectangle{
 	    	squre=(maxx-minx)*(maxy-miny);
 	    	return squre;
 	    }
-		   
+	    /*
+	     *澧炲姞璁＄畻鎬绘枃鏈浉浼煎害鐨勬柟娉�
+	     * 
+	
+	     */
+	    public static float totalSimil(RectangleMBR r1,RectangleMBR r2)
+	    {
+	    	Jaccard jsc= new Jaccard();
+	    	
+	    	float squre=(float) (1.0-jsc.distance(r1.getText(), r2.getText()));
+	    	
+	    	return squre;
+	    }
 	    
 	    /*
 	     * (non-Javadoc)
@@ -271,7 +307,7 @@ public class RectangleMBR implements Rectangle{
 	     return max(c,d);
 		
 	    }
-	    //求中间两个值的差
+	    //姹備腑闂翠袱涓�肩殑宸�
 	    @SuppressWarnings({ "null", "unused" })
 		private static float middleTwo(float a, float b,float c,float d) {
 	    	float[] middle = new float[4];
@@ -294,4 +330,12 @@ public class RectangleMBR implements Rectangle{
 	     float d=min(a,b);
 	     return min(c,d);
 	    }
+
+		public String getText() {
+			return text;
+		}
+
+		public void setText(String text) {
+			this.text = text;
+		}
 }
