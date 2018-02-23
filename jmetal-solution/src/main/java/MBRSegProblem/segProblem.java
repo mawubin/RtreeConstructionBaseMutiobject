@@ -1,4 +1,4 @@
-package MBRSeg;
+package MBRSegProblem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,19 +14,21 @@ import org.uma.jmetal.util.JMetalLogger;
 import com.github.davidmoten.rtree.geometry.Point;
 
 import Chart.Paint;
+import Rtree.Objects;
 import Rtree.RandomObjects;
 import Rtree.RectangleMBR;
+import util.Const;
 
 @SuppressWarnings("serial")
 public class segProblem extends AbstractIntegerProblem{
 	public int count=0;
-	public RandomObjects ranbojs;
+	public Objects ranbojs;
 
     XYSeries mSeriestotalCross = new XYSeries("totalCross");
     XYSeries mSeriestotalSqure = new XYSeries("totalSqure");
     XYSeries mSeriestotalSimil = new XYSeries("totalSimil");
     XYSeries mSeriestotalVarian = new XYSeries("totalVarian");
-	public segProblem(int numberOfVariables,RandomObjects ranobjs) {
+	public segProblem(int numberOfVariables,Objects ranobjs) {
 		setNumberOfVariables(numberOfVariables);
 		setNumberOfObjectives(3);
 		
@@ -50,11 +52,10 @@ public class segProblem extends AbstractIntegerProblem{
 	public void evaluate(IntegerSolution solution) {
 		 double[] f = new double[getNumberOfVariables()];
 		 int numberofvara=getNumberOfVariables();
-		 RandomObjects temRanbojs= new RandomObjects(numberofvara);
-		 temRanbojs=this.ranbojs;
-		 //构建jsonmap存储每一个类别的对象点		 
 		 
-		 HashMap<Integer, RectangleMBR> jsomap = getjsonmap(numberofvara,solution,temRanbojs);
+		 //构建jsonmap存储每一个类别的对象�?		 
+		 
+		 HashMap<Integer, RectangleMBR> jsomap = getjsonmap(numberofvara,solution,this.ranbojs);
 		 int classNumber= jsomap.size();
 		 float totalCross=0;
 		 float totalSqure=0;
@@ -111,7 +112,7 @@ public class segProblem extends AbstractIntegerProblem{
 	    XYSeriesCollection mCollection = new XYSeriesCollection();
 	    XYSeriesCollection mCollectiontotalVarian = new XYSeriesCollection();
 	    
-			//JFrame frame=new JFrame("Java数据统计图");  
+			//JFrame frame=new JFrame("Java数据统计�?");  
 		   // frame.setLayout(new GridLayout(2,2,10,10));  
 		    mCollection.addSeries(mSeriestotalCross);
 		    mCollection.addSeries(mSeriestotalSqure);
@@ -122,13 +123,13 @@ public class segProblem extends AbstractIntegerProblem{
 		    
 	}
 
-	public static HashMap<Integer, RectangleMBR> getjsonmap(int numberofvara, IntegerSolution solution,RandomObjects temRanbojs)
+	public static HashMap<Integer, RectangleMBR> getjsonmap(int numberofvara, IntegerSolution solution,Objects temRanbojs)
 	{
 		HashMap<Integer, RectangleMBR> jsonmap= new HashMap<Integer, RectangleMBR>();
 		 for(int i=0;i<numberofvara;i++)
 		 {
 					 int classkey=solution.getVariableValue(i);
-					 //如果该类别的点没有在jsonmap中出现
+					 //如果该类别的点没有在jsonmap中出�?
 					 if(jsonmap.get(classkey)==null)
 					 {
 						 
@@ -141,7 +142,7 @@ public class segProblem extends AbstractIntegerProblem{
 						 jsonmap.put(classkey, ren);	 
 					 }
 					 else{
-						 //这里主要分了两个部分 ，首先对 空间对象进行分类加入 ，然后对空间对象 进行 MBR并合并text。
+						 //这里主要分了两个部分 ，首先对 空间对象进行分类加入 ，然后对空间对象 进行 MBR并合并text�?
 						 Rtree.Object obj1=temRanbojs.randomobjects.get(i);	
 						 Point pointtemp1=obj1.getPoint();
 						 RectangleMBR ren1= new RectangleMBR(pointtemp1.x1(), pointtemp1.y1(),pointtemp1.x1(), pointtemp1.y1());

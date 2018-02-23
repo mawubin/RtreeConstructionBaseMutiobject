@@ -1,6 +1,5 @@
 package Rtree;
 
-import com.github.davidmoten.rtree.geometry.Geometries;
 import com.github.davidmoten.rtree.geometry.Point;
 
 public class Object {

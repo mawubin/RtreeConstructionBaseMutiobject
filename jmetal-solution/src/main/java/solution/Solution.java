@@ -1,9 +1,10 @@
-package MBRSeg;
+package solution;
 
 import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printFinalSolutionSet;
 import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printQualityIndicators;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.uma.jmetal.algorithm.Algorithm;
@@ -20,14 +21,15 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 
-import com.github.davidmoten.rtree.geometry.Geometries;
 
 import Chart.Paint;
-import Rtree.RandomObjects;
+import Data.DataSetForSequoia;
+import MBRSegProblem.segProblem;
+import util.Const;
 
 public class Solution {
 
-	public static void main(String[] args) throws FileNotFoundException {	 
+	public static void main(String[] args) throws IOException {	 
 	        Problem<IntegerSolution> problem;//瀹氫箟 闂
 	        Algorithm<List<IntegerSolution>> algorithm;//
 	        CrossoverOperator<IntegerSolution> crossover;
@@ -35,9 +37,11 @@ public class Solution {
 	        SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
 	        String referenceParetoFront = "";
 	      //閰嶇疆鏁版嵁绉嶅瓙
-	        RandomObjects ranObjects=new RandomObjects(Const.numberOfSpatialObjects,Geometries.point(0,0),Geometries.point(1000,1000));
+	     //   RandomObjects ranObjects=new RandomObjects(Const.numberOfSpatialObjects,Geometries.point(0,0),Geometries.point(1000,1000));
+	        DataSetForSequoia dataobjects = new DataSetForSequoia(Const.fileAdress);
+	        Paint.paintObjects(dataobjects);
 	        //瀹氫箟浼樺寲闂
-	        segProblem seg=new segProblem(Const.numberOfSpatialObjects, ranObjects);       	
+	        segProblem seg=new segProblem(Const.numberOfSpatialObjects, dataobjects);       	
 	       // problem = new ZDT1();
 	        problem= seg;
 	       
@@ -76,7 +80,7 @@ public class Solution {
 	        JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
 	        //灏嗗叏閮ㄧ缇ゆ墦鍗板埌鏂囦欢涓�
 	        printFinalSolutionSet(population);
-	        Paint.paintResult(population, ranObjects);
+	        Paint.paintResult(population, dataobjects);
 	        if (!referenceParetoFront.equals("")) printQualityIndicators(population, referenceParetoFront);
 	    }
 }
