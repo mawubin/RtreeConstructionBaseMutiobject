@@ -47,8 +47,6 @@ public class segProblem extends AbstractIntegerProblem{
 	    setUpperLimit(upperLimit);
 	}
 
-
-
 	public void evaluate(IntegerSolution solution) {
 		 double[] f = new double[getNumberOfVariables()];
 		 int numberofvara=getNumberOfVariables();
@@ -152,7 +150,7 @@ public class segProblem extends AbstractIntegerProblem{
 						 ren.accumulateRect(ren,temRanbojs.getObject(i).getPoint());
 						 String str2=temRanbojs.randomobjects.get(i).getText();
 						 ren.acumalateString(str1,str2);
-						 ren.arrRects.add( ren1);
+						 ren.arrRects.add(ren1);
 						 jsonmap.put(classkey, ren);
 					 }
 		 }

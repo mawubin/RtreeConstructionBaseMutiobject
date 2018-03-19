@@ -1,7 +1,9 @@
 eclipse.preferences.version=1
+encoding//src/main/java/MBRSegProblem/ConstrainedSegProblem.java=UTF-8
 encoding//src/main/java/MBRSegProblem/segProblem.java=UTF-8
+encoding//src/main/java/MBRSegSolution/ConstrainedSegSolution.java=UTF-8
+encoding//src/main/java/MBRSegSolution/SegSolution.java=UTF-8
 encoding//src/main/java/Rtree/RandomObjects.java=UTF-8
 encoding//src/main/java/Rtree/RectangleMBR.java=UTF-8
 encoding//src/main/java/jmetelmain/ZDT1_jMetal.java=UTF-8
-encoding//src/main/java/solution/Solution.java=UTF-8
 separateDerivedEncodings=true

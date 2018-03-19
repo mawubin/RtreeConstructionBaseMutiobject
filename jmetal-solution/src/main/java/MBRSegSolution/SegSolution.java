@@ -1,4 +1,4 @@
-package solution;
+package MBRSegSolution;
 
 import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printFinalSolutionSet;
 import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printQualityIndicators;
@@ -27,16 +27,16 @@ import Data.DataSetForSequoia;
 import MBRSegProblem.segProblem;
 import util.Const;
 
-public class Solution {
+public class SegSolution {
 
 	public static void main(String[] args) throws IOException {	 
-	        Problem<IntegerSolution> problem;//瀹氫箟 闂
+	        Problem<IntegerSolution> problem;//瀹氫�? 闂�?
 	        Algorithm<List<IntegerSolution>> algorithm;//
 	        CrossoverOperator<IntegerSolution> crossover;
 	        MutationOperator<IntegerSolution> mutation;
 	        SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
 	        String referenceParetoFront = "";
-	      //閰嶇疆鏁版嵁绉嶅瓙
+	      //閰嶇疆鏁版嵁绉嶅�?
 	     //   RandomObjects ranObjects=new RandomObjects(Const.numberOfSpatialObjects,Geometries.point(0,0),Geometries.point(1000,1000));
 	        DataSetForSequoia dataobjects = new DataSetForSequoia(Const.fileAdress);
 	        Paint.paintObjects(dataobjects);
@@ -45,18 +45,18 @@ public class Solution {
 	       // problem = new ZDT1();
 	        problem= seg;
 	       
-	        //閰嶇疆SBX浜ゅ弶绠楀瓙
+	        //閰嶇疆SBX浜ゅ弶绠�?�?
 	        double crossoverProbability = 0.9;
 	        double crossoverDistributionIndex = 20.0;
 //	        crossover = new SBXCrossover(crossoverProbability, crossoverDistributionIndex);
 //	        
 	        crossover=  new  IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
 //	        
-	        //閰嶇疆鍙樺紓绠楀瓙
+	        //閰嶇疆鍙樺紓绠楀�?
 	        double mutationProbability = 1.0 / problem.getNumberOfVariables();
 	        //  double mutationDistributionIndex = 20.0 ;
 	        mutation = new IntegerPolynomialMutation();
-	        //閰嶇疆閫夋嫨绠楀瓙
+	        //閰嶇疆閫夋嫨绠楀�?
 	        selection = new BinaryTournamentSelection<IntegerSolution>(
 	                new RankingAndCrowdingDistanceComparator<IntegerSolution>());
 	        //灏嗙粍浠舵敞鍐屽埌algorithm
@@ -78,7 +78,7 @@ public class Solution {
 	        long computingTime = algorithmRunner.getComputingTime();
 	        seg.paint();
 	        JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-	        //灏嗗叏閮ㄧ缇ゆ墦鍗板埌鏂囦欢涓�
+	        //灏嗗叏閮ㄧ缇ゆ墦鍗板埌鏂囦欢涓�?
 	        printFinalSolutionSet(population);
 	        Paint.paintResult(population, dataobjects);
 	        if (!referenceParetoFront.equals("")) printQualityIndicators(population, referenceParetoFront);
